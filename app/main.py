@@ -22,7 +22,6 @@ from notification_repository import NotificationRepository
 from tasks import send_notification_task
 import os
 
-
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 
@@ -44,15 +43,16 @@ def configure(binder: Binder):
     binder.bind(Session, to=lambda: SessionLocal(), scope=singleton)
     binder.bind(NotificationRepository, scope=singleton)
 
-api = Blueprint('api_v1', __name__, url_prefix='/api/v1')
 
-logger = logging.getLogger(__name__)
+
+api = Blueprint('api_v1', __name__, url_prefix='/api/v1')
 
 @api.route('/notifications', methods=['POST'])
 def create_notification(db : NotificationRepository):
     '''
     Создает уведомление и отправляет его в очередь сообщений.
     '''
+    logger = logging.getLogger('werkzeug')
     logger.info("Creating new notification")
 
     payload = None
@@ -91,6 +91,8 @@ def get_notification(id : str, db : NotificationRepository):
     '''
     Возвращает уведомление по id.
     '''
+    logger = logging.getLogger('werkzeug')
+
     logger.info(f"Searching notification with id {id}")
     found = db.get_by_id(id)
 
@@ -113,6 +115,8 @@ def list_notifications(db : NotificationRepository):
     '''
     Возвращает лист уведомлений с фильтрацией и пагинацией.
     '''
+    logger = logging.getLogger('werkzeug')
+
     try:
         params = NotificationFilter(
             offset = request.args.get("offset", default = 0),
@@ -142,14 +146,7 @@ def list_notifications(db : NotificationRepository):
     
     return jsonify(result), 200
 
-
 app = Flask(__name__)
-
-handler = logging.StreamHandler(sys.stdout)
-handler.setFormatter(logging.Formatter('[%(asctime)s] %(levelname)s: %(message)s'))
-app.logger.addHandler(handler)
-app.logger.setLevel(logging.INFO)
-
 app.register_blueprint(api)
 FlaskInjector(app=app, modules=[configure])
 
