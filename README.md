@@ -74,32 +74,60 @@ Flask-Injector
 
 ##  Структура проекта
 ├── docker-compose.yaml
+
 ├── Readme.md
+
 ├── app/
+
 │   ├── DTO/
+
 │   │   └── notificationDTO.py
+
 │   ├── migrations/
+
 │   │   ├── versions/
+
 │   │   │   ├── 3394cdfd1fb7_fix.py
+
 │   │   │   └── 48a1a8508b87_notifications_table.py
+
 │   │   ├── env.py
+
 │   │   ├── README
+
 │   │   ├── script.py.mako
+
 │   │   └── __init__.py
+
 │   ├── tests/
+
 │   │   ├── test_create_notification_api.py
+
 │   │   ├── test_get_notification_api.py
+
 │   │   ├── test_list_notification_api.py
+
 │   │   └── test_validation.py
+
 │   ├── alembic.ini
+
 │   ├── Dockerfile
+
 │   ├── init.py
+
 │   ├── main.py
+
 │   ├── model.py
+
 │   ├── notification_repository.py
+
 │   ├── pytest.ini
+
 │   ├── requirements.txt
+
 │   ├── tasks.py
+
 │   └── validators.py
+
 └── venv/
 
